@@ -13,7 +13,7 @@ from typing import Final
 from playwright.async_api import BrowserContext
 
 from degentweb import include_file
-from degentweb.browser import in_default_context
+from degentweb.browser import browser_opts, in_default_context
 from degentweb.google_trends import SEARCH_REGIONS, SEARCH_TERM_CATEGORIES
 from degentweb.logging import init_logger_w_env_level
 
@@ -55,23 +55,29 @@ class SearchEntry:
 async def crawl_trends(url: str, context: BrowserContext):
     """Crawl Google Trends at `url` for topics and queries."""
     page = await context.new_page()
-    await page.add_init_script(include_file(__file__, "inject.js"))
-    await page.goto(url, wait_until="networkidle")
-    topics_and_queries_or_err: dict[str, str | list] = await page.evaluate(
-        "getTopicsAndQueries"
-    )
-    asyncio.create_task(page.close())
-    if (err := topics_and_queries_or_err.get("err")) is not None:
-        assert type(err) is str
-        raise Exception(err)
-    topics, queries = (
-        topics_and_queries_or_err["topics"],
-        topics_and_queries_or_err["queries"],
-    )
-    assert type(topics) is list, topics_and_queries_or_err
-    assert type(queries) is list, topics_and_queries_or_err
-    topics_entries = [SearchEntry(**topic) for topic in topics]
-    queries_entries = [SearchEntry(**query) for query in queries]
+    try:
+        await page.goto(url, wait_until="networkidle")
+        topics_and_queries_or_err: dict[str, str | list] = await page.evaluate(
+            include_file(__file__, "inject.js")
+        )
+
+        if (err := topics_and_queries_or_err.get("err")) is not None:
+            assert type(err) is str
+            raise Exception(err)
+        topics, queries = (
+            topics_and_queries_or_err["topics"],
+            topics_and_queries_or_err["queries"],
+        )
+        assert type(topics) is list, topics_and_queries_or_err
+        assert type(queries) is list, topics_and_queries_or_err
+        topics_entries = [SearchEntry(**topic) for topic in topics]
+        queries_entries = [SearchEntry(**query) for query in queries]
+        await page.close()
+    except Exception as err:
+        if browser_opts.ui:
+            await page.pause()
+        raise err
+    await asyncio.sleep(1)
     return topics_entries, queries_entries
 
 
@@ -79,7 +85,7 @@ async def do_main(context: BrowserContext):
     region_category_pairs = [
         (region, category)
         for region in SEARCH_REGIONS
-        for category in SEARCH_TERM_CATEGORIES.keys()
+        for category in [k for k in SEARCH_TERM_CATEGORIES.keys() if k != 0]
     ]
     failed_region_category: dict[tuple[str, int], tuple[Exception, str]] = {}
     # NOTE: Currently, the date range is hardcoded to be 2024.

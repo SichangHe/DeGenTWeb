@@ -14,7 +14,7 @@ class BrowserOpts:
     slow_mo_ms: int = 200
 
 
-opts = BrowserOpts()
+browser_opts = BrowserOpts()
 
 
 async def in_default_context[T](
@@ -30,14 +30,14 @@ async def in_default_context[T](
                 "--disable-site-isolation-trials",  # Make `eval` work
             ],
             bypass_csp=True,  # Make `eval` work
-            devtools=opts.ui,
+            devtools=browser_opts.ui,
             downloads_path=downloads_path,
-            headless=not opts.ui,
+            headless=not browser_opts.ui,
             screen={
                 "width": 1920,
                 "height": 1080,
             },
-            slow_mo=opts.slow_mo_ms if opts.ui else None,
+            slow_mo=browser_opts.slow_mo_ms if browser_opts.ui else None,
             # TODO: New contact webpage.
             user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
             + " WebMeasure/1.0 (https://webresearch.eecs.umich.edu/overview-of-web-measurements/)",
