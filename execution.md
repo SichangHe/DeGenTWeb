@@ -1,5 +1,9 @@
 # Execution
 
+## Preliminary
+
+- [ ] run Binoculars over Common Crawl; see if result make sense
+
 ## Keyword aquisition
 
 - [ ] from Google Trends (`google_trends.md`)
