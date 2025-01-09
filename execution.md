@@ -12,7 +12,8 @@
 - [ ] search Google/Bing/Brave/Perplexity/ChatGPT/ChatNoir
 - [ ] crawl top 10 results/reference
 - [ ] extract body text
-    - DOM Distiller Reading Mode
+    - ~~DOM Distiller Reading Mode~~
+    - [Trafilatura](https://github.com/adbar/trafilatura)
 
 ## Generated text detection
 

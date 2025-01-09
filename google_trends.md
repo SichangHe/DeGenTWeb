@@ -7,6 +7,8 @@
     - but unclear how to know their popularity
 - can get name + relative interest + href to Google Trends page for
     each topic/query entry
+- [ ] Google Trends block request from browser in incognito mode 💀
+    - can use BigQuery to get data directly
 
 plan:
 
@@ -17,3 +19,6 @@ plan:
         the 6 search engines returns 5 pages on average
         - which would take $480000\times5/3600/24=28$ days if
             each page takes 5 seconds to classify
+    - Google Trends has ~1400 topics, w/ levels of subtopics
+        - `google_trends_all_cat.json` from
+            <https://github.com/pat310/google-trends-api/wiki/Google-Trends-Categories>

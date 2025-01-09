@@ -77,7 +77,7 @@ async def crawl_trends(url: str, context: BrowserContext):
         if browser_opts.ui:
             await page.pause()
         raise err
-    await asyncio.sleep(1)
+    await asyncio.sleep(10)
     return topics_entries, queries_entries
 
 
@@ -112,6 +112,7 @@ async def do_main(context: BrowserContext):
 
 async def main():
     # TODO: Parse args for opts.
+    # browser_opts.ui = True
     os.makedirs(USER_DATA_DIR, exist_ok=True)
     os.makedirs(DOWNLOADS_PATH, exist_ok=True)
     await in_default_context(USER_DATA_DIR, DOWNLOADS_PATH, do_main)

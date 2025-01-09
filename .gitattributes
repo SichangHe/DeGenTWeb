@@ -1,0 +1,1 @@
+src/degentweb/google_trends/google_trends_all_cat.json filter=lfs diff=lfs merge=lfs -text
