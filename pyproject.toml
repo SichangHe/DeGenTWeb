@@ -1,0 +1,27 @@
+[project]
+name = "degentweb"
+version = "0.0.0"
+description = "Detect Generated Text on the Web"
+authors = [
+    { name = "Steven Hé (Sīchàng)", email = "stevensichanghe@gmail.com" }
+]
+dependencies = [
+    "playwright>=1.49.1",
+    "asyncio>=3.4.3",
+]
+readme = "README.md"
+requires-python = ">= 3.12"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/degentweb"]

@@ -2,8 +2,9 @@
 
 ## Keyword aquisition
 
-- [ ] from Google Trends
-- [ ] classify into topics
+- [ ] from Google Trends (`google_trends.md`)
+    - Google completion?
+- ~~classify into topics~~ get topic class from Google Trends
 - [ ] human brainstorm related keywords
 
 ## Web searching and crawling
