@@ -8,7 +8,7 @@
 
 script: `degentweb.common_crawl.classify_english `
 
-result dumped to `data/common_crawl/prelim_test/`
+result dumped to `data/common_crawl/prelim_test/`; 5961 page; used 1h 20m
 
 ## manual inspection of 1010 page
 
