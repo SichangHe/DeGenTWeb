@@ -20,7 +20,7 @@ build-backend = "hatchling.build"
 
 [tool.rye]
 managed = true
-dev-dependencies = []
+dev-dependencies = ["scalene>=1.5.49"]
 
 [tool.rye.workspace]
 members = [".", "binoculars"]
