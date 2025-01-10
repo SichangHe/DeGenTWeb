@@ -3,13 +3,15 @@ name = "degentweb"
 version = "0.0.0"
 description = "Detect Generated Text on the Web"
 authors = [
-    { name = "Steven Hé (Sīchàng)", email = "stevensichanghe@gmail.com" }
+    { name = "Steven Hé (Sīchàng)", email = "stevensichanghe@gmail.com" },
 ]
 dependencies = [
     "playwright>=1.49.1",
     "asyncio>=3.4.3",
+    "fastwarc>=0.15.1",
+    "trafilatura[all]>=2.0.0",
+    "binoculars @ file:///ssd1/sichanghe/DeGenTWeb/binoculars",
 ]
-readme = "README.md"
 requires-python = ">= 3.12"
 
 [build-system]
@@ -19,6 +21,9 @@ build-backend = "hatchling.build"
 [tool.rye]
 managed = true
 dev-dependencies = []
+
+[tool.rye.workspace]
+members = [".", "binoculars"]
 
 [tool.hatch.metadata]
 allow-direct-references = true

@@ -1,0 +1,3 @@
+[submodule "binoculars"]
+	path = binoculars
+	url = git@github.com:SichangHe/ahans30--Binoculars.git
