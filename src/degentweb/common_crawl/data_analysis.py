@@ -2,8 +2,9 @@
 
 import pandas as pd
 
-from degentweb.common_crawl import MIN_PAGE_LEN, TSV_DIR, TSV_HEADER
+from degentweb.common_crawl import MIN_PAGE_LEN, TSV_DIR, TSV_FILE_URL, TSV_HEADER
 
+TSV_FILE_URL.download()
 df = pd.read_csv(TSV_DIR, sep="\t", names=TSV_HEADER, engine="pyarrow")
 
 df_eng = df[df["english"] == 1]

@@ -10,10 +10,11 @@ dependencies = [
     "asyncio>=3.4.3",
     "fastwarc>=0.15.1",
     "trafilatura[all]>=2.0.0",
-    "binoculars @ file:///ssd1/sichanghe/DeGenTWeb/binoculars",
+    "binoculars @ file:///${PROJECT_ROOT}/binoculars",
     "pandas>=2.2.3",
     "pyarrow>=18.1.0",
     "matplotlib>=3.10.0",
+    "requests>=2.32.3",
 ]
 requires-python = ">= 3.12"
 
