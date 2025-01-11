@@ -28,7 +28,7 @@ class Plot:
         self.fig, self.ax = fig, ax
 
     def save(self, name: str):
-        ax.legend(fontsize=30, loc="best")
+        self.ax.legend(fontsize=30, loc="best")
         self.fig.savefig(f"{name}.png", bbox_inches="tight", pad_inches=0)
         self.fig.savefig(f"{name}.pdf", bbox_inches="tight", pad_inches=0)
         plt.close()
