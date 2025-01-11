@@ -11,6 +11,9 @@ dependencies = [
     "fastwarc>=0.15.1",
     "trafilatura[all]>=2.0.0",
     "binoculars @ file:///ssd1/sichanghe/DeGenTWeb/binoculars",
+    "pandas>=2.2.3",
+    "pyarrow>=18.1.0",
+    "matplotlib>=3.10.0",
 ]
 requires-python = ">= 3.12"
 

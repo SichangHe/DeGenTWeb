@@ -5,17 +5,11 @@ from fastwarc.warc import ArchiveIterator, WarcRecord, WarcRecordType
 from trafilatura import extract
 
 from binoculars import Binoculars
+from degentweb.common_crawl import OUT_DIR, TSV_DIR, WARC_FILE
 from degentweb.logging import init_logger_w_env_level
 
-# NOTE: We will use compressed file in the future.
-# This is for easy checking of the WARC file.
-WARC_FILE: Final = "CC-MAIN-20240224112548-20240224142548-00079.warc"
-OUT_DIR: Final = "data/common_crawl/prelim_test/"
 CONTEXT_WINDOW: Final = 2048
 """Falcon-7B context window size."""
-MIN_PAGE_LEN: Final = 1000
-"""To ignore pages shorter than around 200 words."""
-TSV_HEADER: Final = ["id", "score", "bytes", "len", "url"]
 
 logger = init_logger_w_env_level(__name__)
 
@@ -23,7 +17,7 @@ logger = init_logger_w_env_level(__name__)
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     bino = Binoculars(max_token_observed=CONTEXT_WINDOW)
-    with open(f"{OUT_DIR}prelim_test_scores.tsv", "a") as out_f:
+    with open(TSV_DIR, "a") as out_f:
         record: WarcRecord
         for record in ArchiveIterator(
             open(WARC_FILE, "rb"),
@@ -55,17 +49,17 @@ def main():
                     exc_info=True,
                 )
                 continue
-            if (
-                extraction is None  # Not English.
-                or len(extraction) < MIN_PAGE_LEN
-            ):
-                continue
-            # TODO: Split on long text and batching.
-            score = bino.compute_score(extraction)
-            assert type(score) is float
-            with open(record_f_path, "w") as f:
-                assert f.write(extraction) == len(extraction), extraction
-            tsv_line = f"{record.record_id}\t{score}\t{len(record_bytes)}\t{len(extraction)}\t{url}\n"
+            english, score, leng, tokens = False, -1, -1, -1
+            if extraction is not None:  # English.
+                english, leng = True, len(extraction)
+                with open(record_f_path, "w") as f:
+                    assert f.write(extraction) == len(extraction), extraction
+                # TODO: Split on long text and batching.
+                encodings = bino._tokenize([extraction])
+                tokens = len(encodings)
+                score = bino.compute_encodings_score(encodings)[0]
+            tsv_line = f"{record.record_id}\t{int(english)}\t{score}\
+\t{len(record_bytes)}\t{leng}\t{tokens}\t{url}\n"
             assert out_f.write(tsv_line) == len(tsv_line), tsv_line
 
 
