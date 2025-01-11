@@ -2,10 +2,11 @@
 
 import pandas as pd
 
-from degentweb.common_crawl import MIN_PAGE_LEN, TSV_DIR, TSV_FILE_URL, TSV_HEADER
+from degentweb.common_crawl import MIN_PAGE_LEN, OUT_DIR, TSV_FILE_URL, TSV_HEADER
+from degentweb.plotting import Plot
 
 TSV_FILE_URL.download()
-df = pd.read_csv(TSV_DIR, sep="\t", names=TSV_HEADER, engine="pyarrow")
+df = pd.read_csv(TSV_FILE_URL.file, sep="\t", names=TSV_HEADER, engine="pyarrow")
 
 df_eng = df[df["english"] == 1]
 assert not (
@@ -24,3 +25,21 @@ print(
 11743 are English (39.23%)
 5070 out of English are longer than 1000 in text (43.17%)
 """
+
+plot = Plot()
+ax = plot.ax
+ax.ecdf(df_eng["leng"], label="CDF of Length")
+ax.axhline(
+    y=(1 - len(df_long) / len(df_eng)),
+    linewidth=2,
+    color="k",
+    alpha=0.7,
+    label="Length Filter Threshold",
+)
+ax.set_xscale("log")
+ax.set_xlabel("Length After Main Text Extraction", fontsize=36)
+ax.set_ylabel(
+    "Cumulative Fraction\nof English Responses",
+    fontsize=36,
+)
+plot.save(f"{OUT_DIR}cdf_leng_eng")
